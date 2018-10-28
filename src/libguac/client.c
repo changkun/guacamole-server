@@ -56,7 +56,7 @@ const guac_layer* GUAC_DEFAULT_LAYER = &__GUAC_DEFAULT_LAYER;
 guac_layer* guac_client_alloc_layer(guac_client* client) {
 
     /* Init new layer */
-    guac_layer* allocd_layer = malloc(sizeof(guac_layer));
+    guac_layer* allocd_layer = calloc(1, sizeof(guac_layer));
     allocd_layer->index = guac_pool_next_int(client->__layer_pool)+1;
 
     return allocd_layer;
@@ -66,7 +66,7 @@ guac_layer* guac_client_alloc_layer(guac_client* client) {
 guac_layer* guac_client_alloc_buffer(guac_client* client) {
 
     /* Init new layer */
-    guac_layer* allocd_layer = malloc(sizeof(guac_layer));
+    guac_layer* allocd_layer = calloc(1, sizeof(guac_layer));
     allocd_layer->index = -guac_pool_next_int(client->__buffer_pool) - 1;
 
     return allocd_layer;
@@ -133,7 +133,7 @@ guac_client* guac_client_alloc() {
     pthread_rwlockattr_t lock_attributes;
 
     /* Allocate new client */
-    guac_client* client = malloc(sizeof(guac_client));
+    guac_client* client = calloc(1, sizeof(guac_client));
     if (client == NULL) {
         guac_error = GUAC_STATUS_NO_MEMORY;
         guac_error_message = "Could not allocate memory for client";
@@ -141,8 +141,6 @@ guac_client* guac_client_alloc() {
     }
 
     /* Init new client */
-    memset(client, 0, sizeof(guac_client));
-
     client->args = __GUAC_CLIENT_NO_ARGS;
     client->state = GUAC_CLIENT_RUNNING;
     client->last_sent_timestamp = guac_timestamp_current();
@@ -162,7 +160,7 @@ guac_client* guac_client_alloc() {
     client->__stream_pool = guac_pool_alloc(0);
 
     /* Initialize streams */
-    client->__output_streams = malloc(sizeof(guac_stream) * GUAC_CLIENT_MAX_STREAMS);
+    client->__output_streams = calloc(GUAC_CLIENT_MAX_STREAMS, sizeof(guac_stream));
 
     for (i=0; i<GUAC_CLIENT_MAX_STREAMS; i++) {
         client->__output_streams[i].index = GUAC_CLIENT_CLOSED_STREAM_INDEX;
@@ -341,6 +339,10 @@ void guac_client_remove_user(guac_client* client, guac_user* user) {
 }
 
 void guac_client_foreach_user(guac_client* client, guac_user_callback* callback, void* data) {
+
+    if (client == NULL || data == NULL) {
+        return;
+    }
 
     guac_user* current;
 

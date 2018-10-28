@@ -342,11 +342,11 @@ int guac_png_write(guac_socket* socket, guac_stream* stream,
             guac_png_flush_handler);
 
     /* Copy data from surface into PNG data */
-    png_rows = (png_byte**) malloc(sizeof(png_byte*) * height);
+    png_rows = (png_byte**) calloc(height, sizeof(png_byte*));
     for (y=0; y<height; y++) {
 
         /* Allocate new PNG row */
-        png_byte* row = (png_byte*) malloc(sizeof(png_byte) * width);
+        png_byte* row = (png_byte*) calloc(width, sizeof(png_byte));
         png_rows[y] = row;
 
         /* Copy data from surface into current row */

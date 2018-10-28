@@ -134,7 +134,7 @@ static char** guac_copy_mimetypes(char** mimetypes, int count) {
     int i;
 
     /* Allocate sufficient space for NULL-terminated array of mimetypes */
-    char** mimetypes_copy = malloc(sizeof(char*) * (count+1));
+    char** mimetypes_copy = calloc((count+1), sizeof(char*));
 
     /* Copy each provided mimetype */
     for (i = 0; i < count; i++)

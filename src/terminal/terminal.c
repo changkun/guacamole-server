@@ -314,7 +314,11 @@ guac_terminal* guac_terminal_create(guac_client* client,
     if (available_width < 0)
         available_width = 0;
 
-    guac_terminal* term = malloc(sizeof(guac_terminal));
+    guac_terminal* term = calloc(1, sizeof(guac_terminal));
+    if (term == NULL) {
+        return NULL;
+    }
+
     term->client = client;
     term->upload_path_handler = NULL;
     term->file_download_handler = NULL;
@@ -1698,11 +1702,11 @@ static int __guac_terminal_send_mouse(guac_terminal* term, guac_user* user,
             int selected_length;
 
             /* End selection and get selected text */
-            int selectable_size = term->term_width * term->term_height * sizeof(char);
-            char* string = malloc(selectable_size);
+            int selectable_size = term->term_width * term->term_height;
+            char* string = calloc(selectable_size, sizeof(char));
             guac_terminal_select_end(term, string);
 
-            selected_length = strnlen(string, selectable_size);
+            selected_length = strnlen(string, selectable_size*sizeof(char));
 
             /* Store new data */
             guac_common_clipboard_reset(term->clipboard, "text/plain");

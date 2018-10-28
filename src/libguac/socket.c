@@ -136,7 +136,7 @@ int guac_socket_select(guac_socket* socket, int usec_timeout) {
 
 guac_socket* guac_socket_alloc() {
 
-    guac_socket* socket = malloc(sizeof(guac_socket));
+    guac_socket* socket = calloc(1, sizeof(guac_socket));
 
     /* If no memory available, return with error */
     if (socket == NULL) {

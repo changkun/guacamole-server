@@ -71,6 +71,10 @@ int guac_ssh_user_join_handler(guac_user* user, int argc, char** argv) {
 
     /* If not owner, synchronize with current display */
     else {
+        // cannot find term, stop
+        if (ssh_client->term == NULL) {
+            return 1;
+        }
         guac_terminal_dup(ssh_client->term, user, user->socket);
         guac_socket_flush(user->socket);
     }

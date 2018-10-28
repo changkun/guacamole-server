@@ -36,7 +36,7 @@
 
 guac_common_cursor* guac_common_cursor_alloc(guac_client* client) {
 
-    guac_common_cursor* cursor = malloc(sizeof(guac_common_cursor));
+    guac_common_cursor* cursor = calloc(1, sizeof(guac_common_cursor));
     if (cursor == NULL)
         return NULL;
 
@@ -278,6 +278,9 @@ void guac_common_cursor_set_blank(guac_common_cursor* cursor) {
 
 void guac_common_cursor_remove_user(guac_common_cursor* cursor,
         guac_user* user) {
+    if (cursor == NULL) {
+        return;
+    }
 
     /* Disassociate from given user */
     if (cursor->user == user)

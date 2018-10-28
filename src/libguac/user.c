@@ -41,6 +41,10 @@
 guac_user* guac_user_alloc() {
 
     guac_user* user = calloc(1, sizeof(guac_user));
+    if (user == NULL) {
+        return NULL;
+    }
+
     int i;
 
     /* Generate ID */

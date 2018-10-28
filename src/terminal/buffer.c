@@ -39,17 +39,16 @@ guac_terminal_buffer* guac_terminal_buffer_alloc(int rows, guac_terminal_char* d
     buffer->available = rows;
     buffer->top = 0;
     buffer->length = 0;
-    buffer->rows = malloc(sizeof(guac_terminal_buffer_row) *
-            buffer->available);
+    buffer->rows = calloc(buffer->available, sizeof(guac_terminal_buffer_row));
 
     /* Init scrollback rows */
     row = buffer->rows;
-    for (i=0; i<rows; i++) {
+    for (i=0; i<buffer->available; i++) {
 
         /* Allocate row  */
         row->available = 256;
         row->length = 0;
-        row->characters = malloc(sizeof(guac_terminal_char) * row->available);
+        row->characters = calloc(row->available, sizeof(guac_terminal_char));
 
         /* Next row */
         row++;

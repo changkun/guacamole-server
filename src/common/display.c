@@ -145,6 +145,9 @@ void guac_common_display_free(guac_common_display* display) {
 
 void guac_common_display_dup(guac_common_display* display, guac_user* user,
         guac_socket* socket) {
+    if (display == NULL) {
+        return;
+    }
 
     pthread_mutex_lock(&display->_lock);
 
@@ -163,6 +166,9 @@ void guac_common_display_dup(guac_common_display* display, guac_user* user,
 }
 
 void guac_common_display_flush(guac_common_display* display) {
+    if (display == NULL) {
+        return;
+    }
 
     pthread_mutex_lock(&display->_lock);
 

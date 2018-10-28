@@ -234,7 +234,7 @@ const char** __guac_error_message() {
 
     /* Allocate thread-local message variable if not already allocated */
     if (message == NULL) {
-        message = malloc(sizeof(const char*));
+        message = calloc(1, sizeof(const char*));
         pthread_setspecific(__guac_error_message_key, message);
     }
 

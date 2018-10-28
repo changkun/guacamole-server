@@ -254,7 +254,10 @@ guac_terminal_display* guac_terminal_display_alloc(guac_client* client,
     PangoContext* context;
 
     /* Allocate display */
-    guac_terminal_display* display = malloc(sizeof(guac_terminal_display));
+    guac_terminal_display* display = calloc(1, sizeof(guac_terminal_display));
+    if (display == NULL) {
+        return NULL;
+    }
     display->client = client;
 
     /* Create default surface */
@@ -518,7 +521,7 @@ void guac_terminal_display_resize(guac_terminal_display* display, int width, int
         free(display->operations);
 
     /* Alloc operations */
-    display->operations = malloc(width * height *
+    display->operations = calloc(width * height,
             sizeof(guac_terminal_operation));
 
     /* Init each operation buffer row */
